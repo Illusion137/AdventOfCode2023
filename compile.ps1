@@ -1,4 +1,4 @@
-g++.exe -static-libstdc++ Day3/main.cpp `
+g++.exe -static-libstdc++ Day4/main.cpp `
     -o main.exe;
 if(!$LASTEXITCODE){
     ./main.exe;

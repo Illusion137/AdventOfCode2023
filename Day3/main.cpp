@@ -58,7 +58,6 @@ size_t part1(){
                     int dist = (rbound - lbound) + 1;
                     std::string num; num.reserve(dist);
                     for(int i = 0; i < dist; i++) num += schematic[r][lbound + i];
-                    
                     sum_part_nums += std::atoi(num.c_str());
                 }
             }
@@ -81,12 +80,14 @@ bool insert_into_gears(std::vector<Gear>& gears, int index, int number){
 }
 
 inline int get_index(int row, int col){
-    return (row * SCHEMATIC_WIDTH) + (col + 1);
+    return (row * SCHEMATIC_WIDTH) + (col);
 }
 
 bool add_close_gears2(std::vector<Gear>& gears, int row, int lbound, int rbound){
     const int distance = (rbound - lbound) + 1;
-    int number = get_number(row, lbound, rbound);
+    std::string num; num.reserve(distance);
+    for(int i = 0; i < distance; i++) num += schematic[row][lbound + i];
+    int number = std::atoi(num.c_str());
     //Check Sides
     if(isinbounds(lbound - 1) && schematic[row][lbound - 1] == '*' ) 
         insert_into_gears(gears, get_index(row, lbound - 1), number);
@@ -95,7 +96,7 @@ bool add_close_gears2(std::vector<Gear>& gears, int row, int lbound, int rbound)
 
     if(isinbounds(row-1)){ // Check top row
         if(isinbounds(lbound - 1) && schematic[row-1][lbound-1] == '*' ) 
-            insert_into_gears(gears, get_index(row - 1, rbound - 1), number);
+            insert_into_gears(gears, get_index(row - 1, lbound - 1), number);
         for(int i = 0; i < distance; i++)
             if(schematic[row-1][lbound + i] == '*' ) 
                 insert_into_gears(gears, get_index(row - 1, lbound + i), number);
@@ -130,11 +131,9 @@ size_t part2(){
             }
         }
     }
-    std::unordered_set<int> indecies;
     for(auto& gear : gears){
-        if(gear.second.size() == 2 && !indecies.count(gear.first)){
-            indecies.insert(gear.first);
-            printf("%d : [%d, %d]\n", gear.first, gear.second[0], gear.second[1]);
+        if(gear.second.size() == 2){
+            // printf("%d : [%d, %d]\n", gear.first, gear.second[0], gear.second[1]);
             gear_ratio_sum += gear.second[0] * gear.second[1];
         }
     }
@@ -148,8 +147,7 @@ int main(int argc, char **argv){
     for(int i = 0; i < SCHEMATIC_WIDTH; std::getline(stream, schematic[i++]));
     stream.close();
     //
-    
     printf("Part 1: %zu\n", part1()); //519444
-    printf("Part 2: %zu\n", part2());
+    printf("Part 2: %zu\n", part2()); //74528807
     return 0;
 }
