@@ -68,6 +68,12 @@
         "optional": "cpp",
         "set": "cpp",
         "sstream": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "valarray": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "queue": "cpp",
+        "ranges": "cpp",
+        "span": "cpp"
     }
 }
