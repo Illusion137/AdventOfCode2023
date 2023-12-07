@@ -5,6 +5,10 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
+#include <algorithm>
+
+typedef long long llong;
 
 size_t get_file_size(FILE *file){
     fseek(file, 0, SEEK_END);
@@ -36,4 +40,49 @@ bool load_file(std::ifstream* stream, std::string filename) {
 	stream->seekg(0, std::ios::beg);
 	assert (stream != NULL);
 	return true;
+}
+
+std::vector<int> get_nums_in_line(std::string line){
+    std::vector<int> nums;
+ next:
+    auto not_ws = line.begin() + line.find_first_not_of(' ');
+    auto ws = std::find(not_ws, line.end(), ' ');
+    bool end = ws == line.end();
+    nums.push_back(std::stoi( std::string(not_ws, ws) ));
+    
+    line = std::string(ws, line.end());
+
+    if(!end) goto next;
+
+    return nums;
+}
+
+std::vector<llong> get_llong_nums_in_line(std::string line){
+    std::vector<llong> nums;
+ next:
+    auto not_ws = line.begin() + line.find_first_not_of(' ');
+    auto ws = std::find(not_ws, line.end(), ' ');
+    bool end = ws == line.end();
+    nums.push_back(std::stoll( std::string(not_ws, ws) ));
+    
+    line = std::string(ws, line.end());
+
+    if(!end) goto next;
+
+    return nums;
+}
+
+std::vector<size_t> get_ullong_nums_in_line(std::string line){
+    std::vector<size_t> nums;
+ next:
+    auto not_ws = line.begin() + line.find_first_not_of(' ');
+    auto ws = std::find(not_ws, line.end(), ' ');
+    bool end = ws == line.end();
+    nums.push_back(std::stoull( std::string(not_ws, ws) ));
+    
+    line = std::string(ws, line.end());
+
+    if(!end) goto next;
+
+    return nums;
 }

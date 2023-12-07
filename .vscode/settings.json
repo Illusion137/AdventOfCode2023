@@ -74,6 +74,8 @@
         "deque": "cpp",
         "queue": "cpp",
         "ranges": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "unordered_map": "cpp",
+        "cassert": "cpp"
     }
 }
