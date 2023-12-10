@@ -9,7 +9,7 @@ typedef std::pair<int,int> time_distance_pair;
 typedef std::pair<llong,llong> long_time_distance_pair;
 
 long_time_distance_pair parse_race(std::ifstream& stream){
-    time_distance_pair pair;
+    long_time_distance_pair pair;
 
     std::string time_line;
     std::string dist_line;
@@ -18,8 +18,8 @@ long_time_distance_pair parse_race(std::ifstream& stream){
     
     int t_pos = time_line.find(':') + 1, d_pos = dist_line.find(':') + 1;
 
-    auto times = get_llong_nums_in_line(time_line.substr(t_pos));
-    auto distances = get_llong_nums_in_line(dist_line.substr(d_pos));
+    auto times = get_nums_in_line<llong>(time_line.substr(t_pos));
+    auto distances = get_nums_in_line<llong>(dist_line.substr(d_pos));
 
     std::string time;
     std::string dist;
@@ -28,7 +28,7 @@ long_time_distance_pair parse_race(std::ifstream& stream){
         dist += std::to_string(distances[i]);
     }
 
-    return { std::stoll(time), std::stoll(dist) };
+    return long_time_distance_pair( std::stoll(time), std::stoll(dist) );
 }
 
 std::vector<time_distance_pair> parse_races(std::ifstream& stream){
@@ -41,8 +41,8 @@ std::vector<time_distance_pair> parse_races(std::ifstream& stream){
     
     int t_pos = time_line.find(':') + 1, d_pos = dist_line.find(':') + 1;
 
-    auto times = get_nums_in_line(time_line.substr(t_pos));
-    auto distances = get_nums_in_line(dist_line.substr(d_pos));
+    auto times = get_nums_in_line<int>(time_line.substr(t_pos));
+    auto distances = get_nums_in_line<int>(dist_line.substr(d_pos));
 
     for(int i = 0; i < times.size(); i++)
         pairs.push_back({times[i], distances[i]});

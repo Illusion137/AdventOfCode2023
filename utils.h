@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <sstream>
 
 typedef long long llong;
 
@@ -42,23 +43,12 @@ bool load_file(std::ifstream* stream, std::string filename) {
 	return true;
 }
 
-std::vector<int> get_nums_in_line(std::string line){
-    std::vector<int> nums;
- next:
-    auto not_ws = line.begin() + line.find_first_not_of(' ');
-    auto ws = std::find(not_ws, line.end(), ' ');
-    bool end = ws == line.end();
-    nums.push_back(std::stoi( std::string(not_ws, ws) ));
-    
-    line = std::string(ws, line.end());
-
-    if(!end) goto next;
-
-    return nums;
+bool inrange(int i, int min, int max){
+    return i >= min && i <= max;
 }
 
-std::vector<llong> get_llong_nums_in_line(std::string line){
-    std::vector<llong> nums;
+template<class T> std::vector<T> get_nums_in_line(std::string line){
+    std::vector<T> nums;
  next:
     auto not_ws = line.begin() + line.find_first_not_of(' ');
     auto ws = std::find(not_ws, line.end(), ' ');
@@ -72,17 +62,49 @@ std::vector<llong> get_llong_nums_in_line(std::string line){
     return nums;
 }
 
-std::vector<size_t> get_ullong_nums_in_line(std::string line){
-    std::vector<size_t> nums;
- next:
-    auto not_ws = line.begin() + line.find_first_not_of(' ');
-    auto ws = std::find(not_ws, line.end(), ' ');
-    bool end = ws == line.end();
-    nums.push_back(std::stoull( std::string(not_ws, ws) ));
-    
-    line = std::string(ws, line.end());
+std::vector<std::string> str_split(std::string s, std::string delimiter) {
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    std::string token;
+    std::vector<std::string> res;
 
-    if(!end) goto next;
+    while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
+        token = s.substr (pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back (token);
+    }
 
-    return nums;
+    res.push_back (s.substr (pos_start));
+    return res;
+}
+std::vector<std::string> str_csplit (const std::string &s, char delim) {
+    std::vector<std::string> result;
+    std::stringstream ss (s);
+    std::string item;
+
+    while (std::getline (ss, item, delim)) {
+        result.push_back (item);
+    }
+
+    return result;
+}
+
+template<class T> void print(T value){
+    std::cout << "[" << value << "]";
+}
+template<class T> void println(T value){
+    std::cout << "[" << value << "]\n";
+}
+template<class T> void printvec(std::vector<T> vec){
+    if(vec.size() == 0) return;
+    std::cout << "{ ";
+    for(int i = 0; i < vec.size() - 1; i++)
+        std::cout << vec[i] << ", ";
+    std::cout << vec[vec.size()-1] << " }\n";
+}
+template<class T> void printvecln(std::vector<T> vec){
+    if(vec.size() == 0) return;
+    std::cout << "{\n";
+    for(const auto& v : vec)
+        std::cout << "  [" << v << "],\n";
+    std::cout << "}\n";
 }

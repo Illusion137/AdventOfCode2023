@@ -1,4 +1,4 @@
-$file = "Day6/main.cpp";
+$file = "Day10/main.cpp";
 $optimization;
 if($args[0] -eq "-o"){$optimization = "-O3";}
 else{$optimization = "-O0";}
@@ -6,10 +6,23 @@ else{$optimization = "-O0";}
 g++.exe -static-libstdc++ $optimization $file `
     -o main.exe;
 if(!$LASTEXITCODE){
-    if($args[1] -eq "-m"){ Measure-Command{./main.exe;} }
-    else{ ./main.exe; }
-    Remove-Item main.exe;
-    Write-Host -NoNewLine 'FINSIHED RUNNING...';
-    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-    Clear-Host;
+    $completed = 0;
+    try {
+        $result = Measure-Command{./main.exe | Out-Default}
+        Write-Host "Time Milliseconds:" $result.TotalMilliseconds -ForegroundColor Green;
+        Remove-Item main.exe;
+        Write-Host -NoNewLine 'FINSIHED RUNNING...' -ForegroundColor Red;
+        $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+        Clear-Host;
+        $completed = 1;
+    }
+    finally{
+        if(!$completed){
+            Write-Host 'FINSIHED RUNNING...' -ForegroundColor Red;
+            $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+            $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+            Clear-Host;
+        }
+    }
 }
+#python test/main.py
